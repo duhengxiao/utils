@@ -1,82 +1,114 @@
-package com.betel.utlis;
+/*
+ *   ©2016 ALL Rights Reserved DHX
+ *  　　   ┏┓   ┏┓
+ *  　　 ┏━┛┻━━━┛┻━┓
+ *   　　┃         ┃
+ *   　　┃    ━    ┃
+ *   　　┃  ┳┛ ┗┳  ┃
+ *   　　┃         ┃
+ *   　　┃    ┻    ┃
+ *   　　┗━┓     ┏━┛
+ *         ┃    ┃  Code is far away from bug with the animal protecting
+ *         ┃    ┃    神兽保佑,代码无bug
+ *         ┃    ┗━━━━━┓
+ *         ┃          ┣┓
+ *         ┃          ┏┛
+ *         ┗┓┓┏━━━━┓┓┏┛
+ *          ┃┫┫    ┃┫┫
+ *          ┗┻┛    ┗┻┛
+ *   ━━━━━━感觉萌萌哒━━━━━━
+ *
+ */
+
+package pers.dhx.utlis;
+
+import org.apache.commons.io.IOUtils;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
 
 /**
- * @ClassName:PropertiesUtil
- * @Description:读写Properties工具
- * @author:Du.hx
- * @Date:2016年6月12日下午1:03:21
- * @version 1.0
+ * <p>
+ * 读写Properties工具
+ * </p>
+ * ClassName: PropertiesUtil <br/>
+ * Author: Du.Hx  <br/>
+ * Date: 2017/5/10 17:22 <br/>
+ * Version: 1.0 <br/>
  */
 public class PropertiesUtil {
 
     /**
-     * 读取指定属性值
-     * 
-     * @author:Du.hx
-     * @Date:2016年6月12日下午1:03:28
-     * @param key
-     * @param propPath
-     * @return
-     * @throws IOException
+     * <p>
+     * 读取配置信息
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/12 16:26
+     *
+     * @param key      属性名称
+     * @param propPath 配置文件路径
+     * @return 返回该属性value
      */
-    public static String read(String key, String propPath) throws IOException {
+    public static String read(String key, String propPath) {
 
         String value = null;
 
-        Properties pps = new Properties();
+        Properties properties = new Properties();
         FileInputStream in = null;
         try {
             in = new FileInputStream(propPath);
-            pps.load(in);
-            value = pps.getProperty(key).trim();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            properties.load(in);
+            value = properties.getProperty(key).trim();
         } catch (IOException e) {
-            e.printStackTrace();
+            // ignore
         } finally {
-            if (in != null) {
-                in.close();
-            }
+            IOUtils.closeQuietly(in);
         }
-
         return value;
     }
 
     /**
-     * 新增或修改属性值
-     * 
-     * @author:Du.hx
-     * @Date:2016年6月12日下午1:03:45
-     * @param key
-     * @param value
-     * @param propPath
-     * @throws IOException
+     * <p>
+     * 写入配置信息
+     * <pre>
+     *     1.如果该配置不存在则新增该配置
+     *     2.如果该配置已存在则更新该配置
+     * </pre>
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/12 16:27
+     *
+     * @param key      属性名称
+     * @param value    属性value值
+     * @param propPath 配置文件路径
+     * @return 写入成功返回：true，失败返回：false
      */
-    public static void write(String key, String value, String propPath) throws IOException {
-        Properties props = new Properties();
+    public static boolean write(String key, String value, String propPath) {
+        Properties properties = new Properties();
         FileInputStream in = null;
         try {
             in = new FileInputStream(propPath);
-            props.load(in);
-            // 强制要求为属性的键和值使用字符串。返回值是 Hashtable 调用 put 的结果。
-            OutputStream fos = new FileOutputStream(propPath);
-            props.setProperty(key, value);
-            // 以适合使用 load 方法加载到 Properties 表中的格式，
-            // 将此 Properties 表中的属性列表（键和元素对）写入输出流
-            props.store(fos, "Update '" + key + "'" + value);
+            properties.load(in);
         } catch (IOException e) {
-            e.printStackTrace();
+            // ignore
+            return false;
         } finally {
-            if (in != null) {
-                in.close();
-            }
+            IOUtils.closeQuietly(in);
         }
+        OutputStream fos = null;
+        try {
+            fos = new FileOutputStream(propPath);
+            properties.setProperty(key, value);
+            properties.store(fos, "Update '" + key + "'" + value);
+        } catch (IOException e) {
+            // ignore
+            return false;
+        } finally {
+            IOUtils.closeQuietly(fos);
+        }
+        return true;
     }
 }
