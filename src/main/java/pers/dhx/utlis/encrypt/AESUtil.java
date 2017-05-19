@@ -1,7 +1,26 @@
-/**
- * 
+/*
+ *   ©2016 ALL Rights Reserved DHX
+ *  　　   ┏┓   ┏┓
+ *  　　 ┏━┛┻━━━┛┻━┓
+ *   　　┃         ┃
+ *   　　┃    ━    ┃
+ *   　　┃  ┳┛ ┗┳  ┃
+ *   　　┃         ┃
+ *   　　┃    ┻    ┃
+ *   　　┗━┓     ┏━┛
+ *         ┃    ┃  Code is far away from bug with the animal protecting
+ *         ┃    ┃    神兽保佑,代码无bug
+ *         ┃    ┗━━━━━┓
+ *         ┃          ┣┓
+ *         ┃          ┏┛
+ *         ┗┓┓┏━━━━┓┓┏┛
+ *          ┃┫┫    ┃┫┫
+ *          ┗┻┛    ┗┻┛
+ *   ━━━━━━感觉萌萌哒━━━━━━
+ *
  */
-package com.betel.utlis.encrypt;
+
+package pers.dhx.utlis.encrypt;
 
 import java.security.SecureRandom;
 
@@ -10,74 +29,84 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * @ClassName:AESUtil
- * @Description:AES加密工具
- * @author:Du.hx
- * @Date:2016年6月12日上午10:43:34
- * @version 1.1
+ * <p>
+ * AES加解密工具
+ * </p>
+ * ClassName: AESUtil <br/>
+ * Author: Du.Hx  <br/>
+ * Date: 2017/5/10 11:23 <br/>
+ * Version: 1.0 <br/>
  */
 public class AESUtil {
-
+    /**
+     * 秘钥
+     */
     private static final String AESKEY = "hellodhx";
 
     /**
+     * <p>
      * AES加密
-     * 
-     * @author:Du.hx
-     * @Date:2016年6月12日上午10:44:32
-     * @param content
-     * @return
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/10 11:26
+     *
+     * @param bytes 待加密字符串
+     * @return 加密后字符串
      * @throws Exception
      */
-    public static String aesEncryptToBytes(String content) throws Exception {
-        KeyGenerator kgen = KeyGenerator.getInstance("AES");
+    public static String encrypt(String bytes) throws Exception {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
 
-        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-        random.setSeed(AESKEY.getBytes());
+        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+        secureRandom.setSeed(AESKEY.getBytes("UTF-8"));
 
-        kgen.init(128, random);
+        keyGenerator.init(128, secureRandom);
         Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(kgen.generateKey().getEncoded(), "AES"));
+        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), "AES"));
 
-        byte buf[] = cipher.doFinal(content.getBytes("utf-8"));
+        byte buf[] = cipher.doFinal(bytes.getBytes("utf-8"));
         return parseByte2HexStr(buf);
     }
 
     /**
+     * <p>
      * AES解密
-     * 
-     * @author:Du.hx
-     * @Date:2016年6月12日上午10:43:45
-     * @param encryptBytes
-     * @return
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/10 11:28
+     *
+     * @param encryptBytes 加密字符串
+     * @return 解密后字符串
      * @throws Exception
      */
-    public static String aesDecryptByBytes(String encryptBytes) throws Exception {
-        KeyGenerator kgen = KeyGenerator.getInstance("AES");
+    public static String decrypt(String encryptBytes) throws Exception {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
 
-        SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-        random.setSeed(AESKEY.getBytes());
+        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+        secureRandom.setSeed(AESKEY.getBytes("UTF-8"));
 
-        kgen.init(128, random);
+        keyGenerator.init(128, secureRandom);
         Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(kgen.generateKey().getEncoded(), "AES"));
+        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(keyGenerator.generateKey().getEncoded(), "AES"));
         byte[] decryptBytes = cipher.doFinal(parseHexStr2Byte(encryptBytes));
 
-        return new String(decryptBytes);
+        return new String(decryptBytes,"UTF-8");
     }
 
     /**
+     * <p>
      * 将二进制转换为十六进制
-     * 
-     * @author:Du.hx
-     * @Date:2016年6月12日上午10:44:03
-     * @param buf
-     * @return
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/10 11:37
+     *
+     * @param buf 二进制字节数组
+     * @return 十六进制字符串
      */
-    public static String parseByte2HexStr(byte buf[]) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < buf.length; i++) {
-            String hex = Integer.toHexString(buf[i] & 0xFF);
+    private static String parseByte2HexStr(byte buf[]) {
+        StringBuilder sb = new StringBuilder();
+        for (byte aBuf : buf) {
+            String hex = Integer.toHexString(aBuf & 0xFF);
             if (hex.length() == 1) {
                 hex = '0' + hex;
             }
@@ -87,15 +116,17 @@ public class AESUtil {
     }
 
     /**
+     * <p>
      * 将十六进制转换为二进制
-     * 
-     * @author:Du.hx
-     * @Date:2016年6月12日上午10:44:19
-     * @param hexStr
-     * @return
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/10 11:39
+     *
+     * @param hexStr 十六进制字符串
+     * @return 二进制字节数组
      */
-    public static byte[] parseHexStr2Byte(String hexStr) {
-        if (hexStr.length() < 1)
+    private static byte[] parseHexStr2Byte(String hexStr) {
+        if (null == hexStr || hexStr.length() < 1)
             return null;
         byte[] result = new byte[hexStr.length() / 2];
         for (int i = 0; i < hexStr.length() / 2; i++) {
@@ -105,5 +136,4 @@ public class AESUtil {
         }
         return result;
     }
-
 }
