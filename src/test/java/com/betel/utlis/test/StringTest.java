@@ -5,8 +5,6 @@ package com.betel.utlis.test;
 
 import java.util.List;
 
-import com.betel.utlis.StringUtil;
-
 /**
  * @ClassName:StringTest
  * @Description:
