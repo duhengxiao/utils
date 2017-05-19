@@ -1,131 +1,149 @@
-package com.betel.utlis;
+/*
+ *   ©2016 ALL Rights Reserved DHX
+ *  　　   ┏┓   ┏┓
+ *  　　 ┏━┛┻━━━┛┻━┓
+ *   　　┃         ┃
+ *   　　┃    ━    ┃
+ *   　　┃  ┳┛ ┗┳  ┃
+ *   　　┃         ┃
+ *   　　┃    ┻    ┃
+ *   　　┗━┓     ┏━┛
+ *         ┃    ┃  Code is far away from bug with the animal protecting
+ *         ┃    ┃    神兽保佑,代码无bug
+ *         ┃    ┗━━━━━┓
+ *         ┃          ┣┓
+ *         ┃          ┏┛
+ *         ┗┓┓┏━━━━┓┓┏┛
+ *          ┃┫┫    ┃┫┫
+ *          ┗┻┛    ┗┻┛
+ *   ━━━━━━感觉萌萌哒━━━━━━
+ *
+ */
 
-import java.sql.Time;
+package pers.dhx.utlis;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @ClassName:DateUtil
- * @Description:时间工具类
- * @author:Du.hx
- * @Date:2016年6月12日上午11:44:40
- * @version 1.0.0
+ * <p>
+ * 时间工具类
+ * </p>
+ * ClassName: DateUtil <br/>
+ * Author: Du.Hx  <br/>
+ * Date: 2017/5/17 13:23 <br/>
+ * Version: 2.0 <br/>
  */
 public class DateUtil {
 
-    /** 缺省日期格式 */
+    /**
+     * 缺省日期格式
+     */
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
 
-    /** 缺省时间格式 */
+    /**
+     * 缺省时间格式
+     */
     public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
 
-    /** 缺省长日期格式,精确到秒 */
+    /**
+     * 缺省长日期格式,精确到秒
+     */
     public static final String DEFAULT_DATETIME_FORMAT_SEC = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * 获得当前日期，如2016-3-31
-     * 
-     * @author:dhx
-     * @Date:2016年6月8日下午3:00:53
-     * @return
+     * <p>
+     * 获得当前日期(年月日)，如2016-3-31
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/17 13:23
+     *
+     * @return 当前日期字符串
      */
     public static String getDate() {
         return today(DEFAULT_DATE_FORMAT);
     }
 
     /**
-     * 获取当前时间，如 14:44:48
-     * 
-     * @author:dhx
-     * @Date:2016年6月8日下午3:01:05
-     * @return
+     * <p>
+     * 获取当前时间(时分秒)，如 14:44:48
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/17 13:24
+     *
+     * @return 当前时间字符串
      */
     public static String getTime() {
         return today(DEFAULT_TIME_FORMAT);
     }
 
     /**
-     * 获取当前日期时间
-     * 
-     * @author:dhx
-     * @Date:2016年6月8日下午3:01:15
-     * @return
+     * <p>
+     * 获取当前日期时间(年月日时分秒)，如 2017-5-17 13:25:34
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/17 13:25
+     *
+     * @return 当前日期时间字符串
      */
     public static String getDateTime() {
         return today(DEFAULT_DATETIME_FORMAT_SEC);
     }
 
     /**
-     * 根据输入的格式得到当前日期的字符串
-     * 
-     * @author:dhx
-     * @Date:2016年6月8日下午3:01:24
-     * @param strFormat
-     * @return
+     * <p>
+     * 根据输入的格式得到当前时间的字符串
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/17 13:26
+     *
+     * @param strFormat 时间格式
+     * @return 时间字符串
      */
     public static String today(String strFormat) {
         return toString(new Date(), strFormat);
     }
 
     /**
-     * 根据格式将日期转为字符串
-     * 
-     * @author:dhx
-     * @Date:2016年6月8日下午3:01:32
-     * @param date
-     * @param format
-     * @return
+     * <p>
+     * 根据格式将时间转为字符串
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/17 13:28
+     *
+     * @param date   时间
+     * @param format 时间格式
+     * @return 时间字符串
      */
     public static String toString(Date date, String format) {
         return getSimpleDateFormat(format).format(date);
     }
 
     /**
+     * <p>
      * 根据格式将字符串转换成Date
-     * 
-     * @author:dhx
-     * @Date:2016年6月8日下午3:01:42
-     * @param dateStr
-     * @param format
-     * @return
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/17 13:29
+     *
+     * @param dateStr 时间字符串
+     * @param format  时间格式
+     * @return 时间
      */
-    public static Date toDate(String dateStr, String format) {
-        try {
-            return getSimpleDateFormat(format).parse(dateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return new Date();
-        }
+    public static Date toDate(String dateStr, String format) throws ParseException {
+        return getSimpleDateFormat(format).parse(dateStr);
     }
 
     /**
-     * 将字符串转换成Time
-     * 
-     * @author:dhx
-     * @Date:2016年6月8日下午3:01:52
-     * @param timeStr
-     * @return
-     */
-    public static Time toTime(String timeStr) {
-        try {
-            String dateStr = "2016-05-12" + " " + timeStr;
-            SimpleDateFormat format = new SimpleDateFormat(DEFAULT_DATETIME_FORMAT_SEC);
-            Date d = format.parse(dateStr);
-            return new Time(d.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return new Time(new Date().getTime());
-        }
-    }
-
-    /**
+     * <p>
      * 将格式字符串转为格式对象
-     * 
-     * @author:dhx
-     * @Date:2016年6月8日下午3:02:04
-     * @param strFormat
-     * @return
+     * </p>
+     * Author: Du.hx <br/>
+     * Date: 2017/5/17 13:30
+     *
+     * @param strFormat 时间格式
+     * @return 格式对象
      */
     private static SimpleDateFormat getSimpleDateFormat(String strFormat) {
         if (strFormat != null && !"".equals(strFormat.trim())) {
